@@ -24,10 +24,11 @@ export const createBooking = async (req: AuthRequest, res: Response): Promise<vo
     }
 
     // verify restaurant is approved
-    if (restaurant.status !== "approved") { }
+    if (restaurant.status !== "approved") {
     res.status(400).json({ message: "Reservation are not open for this restaurant yet" });
     return;
-
+    }
+    
     // verify seat availability
     const requestedGuests = Number(guests);
 
