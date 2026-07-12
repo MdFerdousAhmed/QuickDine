@@ -5,8 +5,11 @@ import connectDB from "./config/db.js";
 import authRouter from "./routes/authRoutes.js";
 import { Error } from "mongoose";
 import restaurantRouter from "./routes/restaurantRoutes.js";
+<<<<<<< HEAD
 import bookingRouter from "./routes/bookingRoutes.js";
 import ownerRouter from "./routes/ownerRoutes.js";
+=======
+>>>>>>> e6682da8dee0abbdbf7aed4e5acfe8cd791186b7
 
 const app = express();
 
@@ -25,8 +28,11 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/restaurants', restaurantRouter);
+<<<<<<< HEAD
 app.use('/api/booking', bookingRouter);
 app.use('/api/owner', ownerRouter);
+=======
+>>>>>>> e6682da8dee0abbdbf7aed4e5acfe8cd791186b7
 
 // Global error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
