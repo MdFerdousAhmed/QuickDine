@@ -24,7 +24,7 @@ const userSchema = new Schema<IUser>(
 
 // Remove password  when converting to JSON
 userSchema.set("toJSON", {
-  transform: (doc, ret, options) => {
+  transform: (doc, ret) => {
     delete ret.password;
     return ret;
   }
