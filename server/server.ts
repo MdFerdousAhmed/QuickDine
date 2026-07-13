@@ -7,6 +7,7 @@ import { Error } from "mongoose";
 import restaurantRouter from "./routes/restaurantRoutes.js";
 import ownerRouter from "./routes/ownerRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/restaurants', restaurantRouter);
 app.use('/api/booking', bookingRouter);
 app.use('/api/owner', ownerRouter);
+app.use('/api/admin', adminRouter);
 
 // Global error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
