@@ -139,7 +139,7 @@ export const getRestaurantAvailability = async (req: Request, res: Response): Pr
 
     // Map slots to available capacities
     const availability = restaurant.availableSlots.map(slot => {
-      const bookedSeats = bookings.filter(booking => booking.time === slot).reduce((sum, booking) => sum + booking.guests, 0);
+      const bookedSeats = bookings.filter(b => b.time === slot).reduce((sum, b) => sum + b.guests, 0);
 
       const totalSeats = restaurant.totalSeats || 20; 
       const availableSeats = Math.max(0, totalSeats - bookedSeats);
