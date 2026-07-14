@@ -1,9 +1,11 @@
 import "dotenv/config";
 import mongoose from "mongoose";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import { User } from "./models/user.js";
 import { Restaurant } from "./models/Restaurant.js";
 import { Booking } from "./models/Booking.js";
+
+
 
 
 const MONGO_URI = process.env.MONGODB_URI || "";
