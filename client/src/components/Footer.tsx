@@ -5,7 +5,7 @@ export default function Footer() {
     return (
         <footer className="w-full bg-surface-container-low border-t border-outline-variant/20 pt-20 pb-12">
             <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 md:grid-cols-4 gap-10">
-                {/* Brand */}
+                {/* Brand section */}
                 <div className="md:col-span-1">
                     <Link to="/" className="text-primary block mb-2">
                         <img src="/logo.svg" alt="Logo" className="h-10 mt-1.5" />
