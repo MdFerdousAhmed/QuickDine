@@ -46,7 +46,7 @@ export const createBooking = async (req: AuthRequest, res: Response): Promise<vo
     const availableSeats = totalSeats - bookedSeats;
 
     if (requestedGuests > availableSeats) {
-      res.status(400).json({ message: `Unable to reserve only ${availableSeats} seats are available for this time slot.` })
+      res.status(400).json({ message: `Unable to reserve only ${availableSeats} seats are available for this time slot.`, })
     }
 
     const booking = await Booking.create({
