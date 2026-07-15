@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
+import { User } from "../models/User.js";
 import { AuthRequest } from "../middlewares/auth.js";
+
 
 // Helper to generate JWT token
 const generateToken = (id: string) => {
-  return jwt.sign({ id: id }, process.env.JWT_SECRET as string, {
+  return jwt.sign({id}, process.env.JWT_SECRET as string, {
     expiresIn: "30d",
   });
 };
@@ -54,8 +55,8 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       res.status(400).json({ message: "Invalid user data" });
     }
   } catch (error: any) {
-    console.error("Error registering user:", error);
-    res.status(400).json({ message: "Error registering user" });
+    console.error(error);
+    res.status(400).json({ message: error.message });
    }
 }
 
@@ -73,13 +74,13 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
 
     // Check for user email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({email})
     if (!user) {
       res.status(401).json({ message: "Invalid email or password" });
       return;
     }
 
-    // Check password
+    // Check if password matched
     const isMatch = await bcrypt.compare(password, user.password || "");
     if (!isMatch) {
       res.status(401).json({ message: "Invalid email or password" });
@@ -93,12 +94,12 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         phone: user.phone,
         role: user.role,
         token: generateToken(user._id.toString())
-      });
+      })
 
     
    } catch (error: any) {
-    console.error("Error logging in user:", error);
-    res.status(400).json({ message: "Error logging in user" });
+    console.error(error);
+    res.status(400).json({ message: error.message });
    }
 }
 
@@ -111,9 +112,9 @@ export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
         res.status(401).json({ message: "Not authorized" });
         return;
       }
-      res.json(req.user);
+      res.json(req.user)
    } catch (error: any) {
-    console.error("Error fetching user profile:", error);
-    res.status(500).json({ message: "Error fetching user profile" });
+    console.error(error);
+    res.status(500).json({ message: error.message });
    }
 }

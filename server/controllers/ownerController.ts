@@ -10,7 +10,7 @@ const uploadToCloudinary = (fileBuffer: Buffer): Promise<{secure_url: string }> 
     const stream = cloudinary.uploader.upload_stream({ folder: "QuickDine" }, (error, result) => {
       if (error) return reject(error);
       if (!result) return reject(new Error("Upload failed"));
-      resolve({ secure_url: result.secure_url })
+      resolve({ secure_url: result.secure_url})
     })
     stream.end(fileBuffer)
   })
@@ -54,7 +54,7 @@ export const createOwnerRestaurant = async (req: AuthRequest, res: Response): Pr
     // Generate slug from name
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
 
-    const slugExists = await Restaurant.findOne({ slug });
+    const slugExists = await Restaurant.findOne({slug});
     if (slugExists) {
       res.status(400).json({ message: "A restaurant with this name already exists" });
       return;
@@ -118,7 +118,7 @@ export const updateOwnerRestaurant = async (req: AuthRequest, res: Response): Pr
     if(location) restaurant.location = location;
     if(address) restaurant.address = address;
     if(chef) restaurant.chef = chef;
-    if(totalSeats) restaurant.totalSeats = totalSeats;
+    if(totalSeats) restaurant.totalSeats = Number(totalSeats);
 
     if(tags){
       restaurant.tags = typeof tags === "string" ? tags.split(",").map((t) => t.trim()) : tags;

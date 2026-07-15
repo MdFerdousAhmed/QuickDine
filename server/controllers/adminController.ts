@@ -1,8 +1,8 @@
 import { Response } from "express";
-import { AuthRequest } from "../middlewares/auth.js";
 import { Restaurant } from "../models/Restaurant.js";
-import { User } from "../models/user.js";
+import { User } from "../models/User.js";
 import { Booking } from "../models/Booking.js";
+import { AuthRequest } from "../middlewares/auth.js";
 
 // Get all restaurants for admin management
 // GET /api/admin/restaurants

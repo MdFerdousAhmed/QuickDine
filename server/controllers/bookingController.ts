@@ -41,7 +41,7 @@ export const createBooking = async (req: AuthRequest, res: Response): Promise<vo
 
     const bookedSeats = existingBookings.reduce((sum, b) => sum + b.guests, 0)
 
-    const totalSeats = restaurant?.totalSeats || 20
+    const totalSeats = restaurant.totalSeats || 20;
 
     const availableSeats = totalSeats - bookedSeats;
 
@@ -114,7 +114,7 @@ export const cancelBookings = async (req: AuthRequest, res: Response): Promise<v
     res.json(populatedBooking);
 
   } catch (error: any) {
-    console.error("Error canceling booking:", error);
+    console.error(error);
     res.status(400).json({ message: error.message });
   }
 }

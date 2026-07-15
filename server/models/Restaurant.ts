@@ -1,6 +1,6 @@
 import { Document, Schema, model, Types } from "mongoose";
 
-export interface IRestaurant extends Document {
+export interface IRestaurant extends Document{
   name: string;
   slug: string;
   description: string;
@@ -23,7 +23,7 @@ export interface IRestaurant extends Document {
   updatedAt: Date;
 }
 
-const restaurantSchema = new Schema<IRestaurant>(
+const RestaurantSchema = new Schema<IRestaurant>(
   {
     name: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
@@ -33,7 +33,7 @@ const restaurantSchema = new Schema<IRestaurant>(
     rating: { type: Number, default: 5.0, min: 1, max: 5 },
     reviewCount: { type: Number, default: 0 },
     location: { type: String, required: true, trim: true },
-    address: { type: String, required: true, trim: true },
+    address: { type: String, required: true },
     image: { type: String, default: "" },
     chef: { type: String, required: true},
     tags: [{ type: String}],
@@ -50,4 +50,4 @@ const restaurantSchema = new Schema<IRestaurant>(
 
 
 
-export const Restaurant = model<IRestaurant>("Restaurant", restaurantSchema);
+export const Restaurant = model<IRestaurant>("Restaurant", RestaurantSchema);
