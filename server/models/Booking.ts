@@ -15,7 +15,7 @@ export interface IBooking extends Document {
   updatedAt: Date;
 }
 
-const bookingSchema = new Schema<IBooking>(
+const BookingSchema = new Schema<IBooking>(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     restaurant: { type: Schema.Types.ObjectId, ref: "Restaurant", required: true },
@@ -31,11 +31,11 @@ const bookingSchema = new Schema<IBooking>(
 );
 
 
-// Remove password  when converting to JSON
-bookingSchema.pre("save", function (next) {
+// Auto-generate reference code on save
+BookingSchema.pre("save", function (next) {
   if (!this.bookingId) {
-    this.bookingId = `GR-${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
+    this.bookingId = `GR-${crypto.randomBytes(4).toString("hex").toUpperCase()}`
   }
-});
+})
 
-export const Booking = model<IBooking>("Booking", bookingSchema);
+export const Booking = model<IBooking>("Booking", BookingSchema);

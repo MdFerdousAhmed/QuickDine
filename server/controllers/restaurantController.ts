@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Restaurant } from "../models/Restaurant.js";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.js";
+import { User } from "../models/User.js";
 import { Booking } from "../models/Booking.js";
 
 
@@ -12,7 +12,7 @@ export const getRestaurants = async (req: Request, res: Response): Promise<void>
     const { search, priceRange, rating, location, sort } = req.query;
 
     //Build query object
-    const queryObj: any = { status: "approved" };
+    const queryObj: any = {status: "approved"};
 
     if (search) {
       queryObj.$or = [
@@ -23,8 +23,8 @@ export const getRestaurants = async (req: Request, res: Response): Promise<void>
     }
 
     if (priceRange) {
-      const price = Array.isArray(priceRange) ? priceRange : [priceRange];
-      queryObj.priceRange = { $in: price };
+      const prices = Array.isArray(priceRange) ? priceRange : [priceRange];
+      queryObj.priceRange = { $in: prices };
     }
 
     if (rating) {
@@ -36,20 +36,20 @@ export const getRestaurants = async (req: Request, res: Response): Promise<void>
     }
 
     // sorting
-    let sortOption: any = { createdAt: -1 }; // default sorting by newest
+    let sortOption: any = { createdAt: -1 }
     if (sort === "rating") {
-      sortOption = { rating: -1 }; // descending order
-    } else if (sort === "price_low") {
-      sortOption = { priceRange: 1 }; // ascending order
-    } else if (sort === "price_high") {
-      sortOption = { priceRange: -1 }; // descending order
+      sortOption = { rating: -1 }
+    }else if (sort === "price_low"){
+      sortOption = { priceRange: 1 }
+    }else if (sort === "price_high"){
+      sortOption = { priceRange: -1 }
     }
 
     const restaurant = await Restaurant.find(queryObj).sort(sortOption);
     res.json(restaurant);
   } catch (error: any) {
-    console.error("Error fetching restaurants:", error);
-    res.status(400).json({ message: error.message || "Error fetching restaurants" });
+    console.error(error);
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -60,10 +60,7 @@ export const getFeaturedRestaurants = async (req: Request, res: Response): Promi
   try {
     const featured = await Restaurant.find({
       status: "approved",
-      $or: [
-        { featured: true },
-        { exclusive: true }
-      ]
+      $or: [{ featured: true }, { exclusive: true }]
     }).limit(6)
     res.json(featured);
   } catch (error: any) {
@@ -88,11 +85,11 @@ export const getRestaurantBySlug = async (req: Request, res: Response): Promise<
       let isAuthorized = false;
       if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
-          const token = req.headers.authorization.split(' ')[1];
+          const token = req.headers.authorization.split(" ")[1];
           const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
 
           const user = await User.findById(decoded.id);
-          if (user && (user.role === "admin" || (user.role === "owner" && restaurant.owner.toString() === user._id.toString()))) {
+          if (user && (user.role === "admin" || (user.role === "owner" && restaurant.owner.toString() === user._id.toString()))){
             isAuthorized = true;
           }
         } catch (err) {
@@ -100,14 +97,14 @@ export const getRestaurantBySlug = async (req: Request, res: Response): Promise<
         }
       }
       if (!isAuthorized) {
-        res.status(404).json({ message: "Restaurant not found or pending" });
+        res.status(404).json({ message: "Restaurant not found or pending approval" });
         return;
       }
     }
     res.json(restaurant);
   } catch (error: any) {
-    console.error("Error fetching restaurants:", error);
-    res.status(400).json({ message: error.message || "Error fetching restaurants" });
+    console.error(error);
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -138,7 +135,7 @@ export const getRestaurantAvailability = async (req: Request, res: Response): Pr
     });
 
     // Map slots to available capacities
-    const availability = restaurant.availableSlots.map(slot => {
+    const availability = restaurant.availableSlots.map((slot)=> {
       const bookedSeats = bookings.filter(b => b.time === slot).reduce((sum, b) => sum + b.guests, 0);
 
       const totalSeats = restaurant.totalSeats || 20; 
@@ -147,12 +144,12 @@ export const getRestaurantAvailability = async (req: Request, res: Response): Pr
         time: slot,
         availableSeats,
         isAvailable: availableSeats > 0
-      };
-    });
+      }
+    })
 
-    res.json(availability);
+    res.json(availability)
   } catch (error: any) {
-    console.error("Error fetching restaurants:", error);
-    res.status(400).json({ message: error.message || "Error fetching restaurants" });
+    console.error(error);
+    res.status(400).json({ message: error.message });
   }
-};
+}
